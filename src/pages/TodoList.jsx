@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Spinner } from "mdc-react";
+import { Spinner, Layout } from "mdc-react";
 
 import useApi from "../hooks";
 
 import TodoList from "../component/TodoList";
 import TodoForm from "../component/TodoForm";
 import TodoDetails from "../component/TodoDetails";
+
+import "./index.scss";
 
 export default function TodoListPage({ match }) {
   const [selectedTodo, setSelectedTodo] = useState(null);
@@ -42,17 +44,24 @@ export default function TodoListPage({ match }) {
   if (!list || !todos) return <Spinner />;
 
   return (
-    <div id="todo-list-page" className="page">
-      <TodoList
-        list={list}
-        todos={todos}
-        onSelect={handleSelect}
-        onDelete={handleDelete}
-        onUpdate={handleUpdate}
-      />
-      <TodoForm onSubmit={handleSubmit} />
+    <Layout id="todo-list-page" className="page" row>
+      <Layout>
+        <TodoList
+          list={list}
+          todos={todos}
+          onSelect={handleSelect}
+          onDelete={handleDelete}
+          onUpdate={handleUpdate}
+        />
+        <TodoForm onSubmit={handleSubmit} />
+      </Layout>
 
-      {selectedTodo && <TodoDetails todo={selectedTodo} />}
-    </div>
+      {selectedTodo && (
+        <TodoDetails
+          todo={selectedTodo}
+          onClose={() => setSelectedTodo(null)}
+        />
+      )}
+    </Layout>
   );
 }
